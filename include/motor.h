@@ -6,12 +6,13 @@
 
 class Motor {
 private:
-    void setMotorA(float vel);
-    void setMotorB(float vel);
+    
 public:
     Motor();
-    void stopMotors();
-    void setMotor(float vel1, float vel2);
-}
+    void enablePKS1(float vel);
+    void enablePKS2(float vel);
+    void stopPKS();
+    void enablePKS(float vel1, float vel2);
+};
 
 #endif
