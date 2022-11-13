@@ -1,6 +1,7 @@
 #include "../include/motor.h"
 
 #include "../include/defines.h"
+#include "../include/imuUtils.h"
 
 void Motor::enablePKS1(float vel) {
     if (vel > 0) {
@@ -70,9 +71,34 @@ Motor::Motor() {
     stopPKS();
 }
 
-
-
 void Motor::enablePKS(float vel1, float vel2) {
     enablePKS1(vel1);
     enablePKS2(vel2);
+}
+
+float Motor::pid(float target, float atual) {
+    float kp = 20;
+    // float kd = 0;
+    // float ki = 0;
+
+    float error = target - atual;
+    float output = error * kp;
+    return output;
+}
+
+void Motor::motorsControl(float linear, float angular) {
+    float ROBO_V[2] = {0, 0};
+    Serial.print("ANGULAR: ");
+    Serial.println(angular);
+    angular = pid(angular, readAngularSpeed());
+    angular = angular > 100 ? 100 : angular;
+    float Vel_R =
+        linear - angular;  // ao somar o angular com linear em cada motor
+                           // conseguimos a ideia de direcao do robo
+    float Vel_L = linear + angular;
+    Vel_L = abs(Vel_L) < 10 ? 0 : Vel_L;
+    Vel_R = abs(Vel_R) < 10 ? 0 : Vel_R;
+    ROBO_V[0] = map(Vel_L, -100, 100, -65535, 65535);
+    ROBO_V[1] = map(Vel_R, -100, 100, -65535, 65535);
+    enablePKS(ROBO_V[1], ROBO_V[0]);
 }
