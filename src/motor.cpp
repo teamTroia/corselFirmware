@@ -24,7 +24,7 @@ void Motor::enablePKS1(float vel) {
     }
 }
 
-void enablePKS2(float vel) {
+void Motor::enablePKS2(float vel) {
     if (vel > 0) {
         pwmWrite(SD1_PK2, vel);
         pwmWrite(SD2_PK2, 100);
