@@ -6,7 +6,8 @@
 
 class Motor {
    private:
-    float pid(float target, float atual);
+    float pidIMU(float target, float atual);
+    float pidCamera(int target, int atual);
     void enablePKS1(float vel);
     void enablePKS2(float vel);
     IMU imu;
@@ -15,7 +16,7 @@ class Motor {
     void stopPKS();
     void enablePKS(float vel1, float vel2);
     void init();
-    void motorsControl(float linear, float angular);
+    void motorsControl(float linear, float angular, int posCone);
 };
 
 #endif

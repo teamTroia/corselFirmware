@@ -18,8 +18,25 @@ void setup() {
     Serial.begin(9600);
     motores.init();
     Serial2.begin(9600);
+    Serial2.print("AT\r\n");
     pinMode(PC13, OUTPUT);
     digitalWrite(PC13, LOW);
+    pinMode(PINO_LED, OUTPUT);
+    digitalWrite(PINO_LED, LOW);
+}
+
+void blink() {
+    digitalWrite(PINO_LED, HIGH);
+    delay(200);
+    digitalWrite(PINO_LED, LOW);
+    delay(200);
+    digitalWrite(PINO_LED, HIGH);
+    delay(200);
+    digitalWrite(PINO_LED, LOW);
+    delay(200);
+    digitalWrite(PINO_LED, HIGH);
+    delay(200);
+    digitalWrite(PINO_LED, LOW);
 }
 
 
@@ -27,16 +44,12 @@ void loop() {
     char buff = ' ';
     if (Serial2.available()) {
         buff = Serial2.read();
-        Serial.print(buff);
         if (buff == 'B'){
             comandoIniciado = true;
         }
         if (comandoIniciado && buff != 'B') {
             if (buff == 'E') {
-                Serial.println("AA0");
                 comandoPronto = true;
-                Serial.print(cmd);
-                digitalWrite(PC13, HIGH);
             } else {
                 cmd = cmd + buff;
             }
@@ -47,6 +60,10 @@ void loop() {
         if (cmd == "ON") {
             ligado = true;
             momentoLigado = millis();
+        } else if (cmd == "NOC") {
+            posCone = CENTRO_CONE;
+        } else {
+            posCone = atoi(cmd.c_str());
         }
 
         comandoPronto = false;
@@ -55,9 +72,10 @@ void loop() {
     }
 
     if (ligado) {
-        Serial.println("LIGOU");
         if (momentoLigado - millis() > 5000) {
-            motores.motorsControl(20,0);
+            Serial.print("POS CONE: ");
+            Serial.println(posCone);
+            motores.motorsControl(20,0, posCone);
         }
     }
 }

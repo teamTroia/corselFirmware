@@ -82,25 +82,39 @@ void Motor::enablePKS(float vel1, float vel2) {
     enablePKS2(-vel2);
 }
 
-float Motor::pid(float target, float atual) {
+float Motor::pidIMU(float target, float atual) {
     float kp = 60;
-    // float kd = 0;
-    // float ki = 0;
-
+    
     float error = target - atual;
     float output = error * kp;
     return output;
 }
 
-void Motor::motorsControl(float linear, float angular) {
+float pidCamera(int target, int atual) {
+    int kp = 0.00035;
+
+    int error = target - atual;
+    int output = error * kp;
+    return output;
+}
+
+void Motor::motorsControl(float linear, float angular, int posCone) {
     float ROBO_V[2] = {0, 0};
-    angular = pid(angular, imu.readAngularSpeed());
+
+    angular += pidCamera(CENTRO_CONE, posCone);
+
+    angular = pidIMU(angular, imu.readAngularSpeed());
     angular = angular > 100 ? 100 : angular;
-    float Vel_R = -linear - angular;
+
+
+    float Vel_R = -linear - angular ;
     float Vel_L = -linear + angular;
+
     Vel_L = abs(Vel_L) < 10 ? 0 : Vel_L;
     Vel_R = abs(Vel_R) < 10 ? 0 : Vel_R;
+
     ROBO_V[0] = map(Vel_L, -100, 100, -65535, 65535);
     ROBO_V[1] = map(Vel_R, -100, 100, -65535, 65535);
+
     enablePKS(ROBO_V[1], ROBO_V[0]);
 }
