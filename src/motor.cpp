@@ -1,18 +1,17 @@
 #include "../include/motor.h"
-
 #include "../include/defines.h"
-#include "../include/imuUtils.h"
 
 void Motor::enablePKS1(float vel) {
     if (vel > 0) {
         pwmWrite(SD1_PK1, vel);
-        pwmWrite(SD2_PK1, 100);
+        pwmWrite(SD2_PK1, 65535);
         digitalWrite(ENB1_PK1, HIGH);
         digitalWrite(ENB2_PK1, LOW);
 
     } else if (vel < 0) {
+        vel = fabs(vel);
         pwmWrite(SD2_PK1, vel);
-        pwmWrite(SD1_PK1, 100);
+        pwmWrite(SD1_PK1, 65535);
         digitalWrite(ENB1_PK1, LOW);
         digitalWrite(ENB2_PK1, HIGH);
 
@@ -27,13 +26,14 @@ void Motor::enablePKS1(float vel) {
 void Motor::enablePKS2(float vel) {
     if (vel > 0) {
         pwmWrite(SD1_PK2, vel);
-        pwmWrite(SD2_PK2, 100);
+        pwmWrite(SD2_PK2, 65535);
         digitalWrite(ENB1_PK2, HIGH);
         digitalWrite(ENB2_PK2, LOW);
 
     } else if (vel < 0) {
+        vel = fabs(vel);
         pwmWrite(SD2_PK2, vel);
-        pwmWrite(SD1_PK2, 100);
+        pwmWrite(SD1_PK2, 65535);
         digitalWrite(ENB1_PK2, LOW);
         digitalWrite(ENB2_PK2, HIGH);
 
@@ -58,6 +58,11 @@ void Motor::stopPKS() {
 }
 
 Motor::Motor() {
+    imu = IMU();
+    imu.init_mpu();
+}
+
+void Motor::init() {
     pinMode(SD1_PK1, PWM);  // SD Parkinson
     pinMode(SD2_PK1, PWM);
     pinMode(SD1_PK2, PWM);
@@ -69,15 +74,16 @@ Motor::Motor() {
     pinMode(ENB2_PK2, OUTPUT);
 
     stopPKS();
+
 }
 
 void Motor::enablePKS(float vel1, float vel2) {
     enablePKS1(vel1);
-    enablePKS2(vel2);
+    enablePKS2(-vel2);
 }
 
 float Motor::pid(float target, float atual) {
-    float kp = 20;
+    float kp = 60;
     // float kd = 0;
     // float ki = 0;
 
@@ -88,9 +94,9 @@ float Motor::pid(float target, float atual) {
 
 void Motor::motorsControl(float linear, float angular) {
     float ROBO_V[2] = {0, 0};
-    Serial.print("ANGULAR: ");
-    Serial.println(angular);
-    angular = pid(angular, readAngularSpeed());
+    // Serial.print("ANGULAR: ");
+    // Serial.println(angular);
+    angular = pid(angular, imu.readAngularSpeed());
     angular = angular > 100 ? 100 : angular;
     float Vel_R =
         linear - angular;  // ao somar o angular com linear em cada motor
@@ -100,5 +106,9 @@ void Motor::motorsControl(float linear, float angular) {
     Vel_R = abs(Vel_R) < 10 ? 0 : Vel_R;
     ROBO_V[0] = map(Vel_L, -100, 100, -65535, 65535);
     ROBO_V[1] = map(Vel_R, -100, 100, -65535, 65535);
+    // Serial.print("V1: ");
+    // Serial.println(ROBO_V[0]);
+    // Serial.print("V2: ");
+    // Serial.println(ROBO_V[1]);
     enablePKS(ROBO_V[1], ROBO_V[0]);
 }

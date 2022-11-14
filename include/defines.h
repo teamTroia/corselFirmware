@@ -11,5 +11,4 @@
 #define ENB1_PK2 PB1
 #define ENB2_PK2 PA7
 
-#define Wire WIRE2
 #define MPU_ADDR 0x68
