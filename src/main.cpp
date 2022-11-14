@@ -7,33 +7,57 @@
 
 Motor motores = Motor();
 bool ligado = false;
+bool comandoIniciado = false;
+bool comandoPronto = false;
+String cmd = "";
+long int momentoLigado = 0;
+
+int posCone = 320;
 
 void setup() {
     Serial.begin(9600);
     motores.init();
-    Serial1.begin(9600);
+    Serial2.begin(9600);
+    pinMode(PC13, OUTPUT);
+    digitalWrite(PC13, LOW);
 }
 
+
 void loop() {
-    String cmd = "";
-    if (Serial1.available()) {
-       char buff;
-       buff = Serial1.read();
-       Serial.print(buff);
-       if (buff == 'E') {
-            buff = Serial1.read();
-            Serial.print(buff);
-            while (Serial1.available() && buff != 'E') {
-                cmd += buff;
+    char buff = ' ';
+    if (Serial2.available()) {
+        buff = Serial2.read();
+        Serial.print(buff);
+        if (buff == 'B'){
+            comandoIniciado = true;
+        }
+        if (comandoIniciado && buff != 'B') {
+            if (buff == 'E') {
+                Serial.println("AA0");
+                comandoPronto = true;
+                Serial.print(cmd);
+                digitalWrite(PC13, HIGH);
+            } else {
+                cmd = cmd + buff;
             }
-       } else {
-        cmd = "";
-       }
+        }
     }
 
-    ligado = (cmd == "ON") || ligado;
+    if (comandoPronto) {
+        if (cmd == "ON") {
+            ligado = true;
+            momentoLigado = millis();
+        }
+
+        comandoPronto = false;
+        comandoIniciado = false;
+        cmd = "";
+    }
 
     if (ligado) {
-        motores.motorsControl(20,0);
+        Serial.println("LIGOU");
+        if (momentoLigado - millis() > 5000) {
+            motores.motorsControl(20,0);
+        }
     }
 }

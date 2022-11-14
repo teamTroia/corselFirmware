@@ -59,7 +59,5 @@ float IMU::readAngularSpeed() {
     gyroX *= (0.017453293F);
     gyroY *= (0.017453293F);
     gyroZ *= (0.017453293F);
-    Serial.print("gyroZ: ");
-    Serial.println(gyroZ);
     return gyroZ;
 }
