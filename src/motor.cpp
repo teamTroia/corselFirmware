@@ -94,21 +94,13 @@ float Motor::pid(float target, float atual) {
 
 void Motor::motorsControl(float linear, float angular) {
     float ROBO_V[2] = {0, 0};
-    // Serial.print("ANGULAR: ");
-    // Serial.println(angular);
     angular = pid(angular, imu.readAngularSpeed());
     angular = angular > 100 ? 100 : angular;
-    float Vel_R =
-        linear - angular;  // ao somar o angular com linear em cada motor
-                           // conseguimos a ideia de direcao do robo
-    float Vel_L = linear + angular;
+    float Vel_R = -linear - angular;
+    float Vel_L = -linear + angular;
     Vel_L = abs(Vel_L) < 10 ? 0 : Vel_L;
     Vel_R = abs(Vel_R) < 10 ? 0 : Vel_R;
     ROBO_V[0] = map(Vel_L, -100, 100, -65535, 65535);
     ROBO_V[1] = map(Vel_R, -100, 100, -65535, 65535);
-    // Serial.print("V1: ");
-    // Serial.println(ROBO_V[0]);
-    // Serial.print("V2: ");
-    // Serial.println(ROBO_V[1]);
     enablePKS(ROBO_V[1], ROBO_V[0]);
 }
