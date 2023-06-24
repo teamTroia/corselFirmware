@@ -1,13 +1,11 @@
-#include "../include/imuUtils.h"
-#include "./defines.h"
+#ifndef GIROSCOPIO_H
+#define GIROSCOPIO_H
 
-TwoWire WIRE2 (2,I2C_FAST_MODE);
-#define Wire WIRE2
+#include <defines.h>
+#include <Wire.h>
 
-IMU::IMU() {
 
-}
-void IMU::init_mpu() {
+void init_mpu() {
     Wire.begin();
     Wire.beginTransmission(MPU_ADDR);
     Wire.write(0x6B);
@@ -25,12 +23,12 @@ void IMU::init_mpu() {
     Wire.endTransmission(true);
 }
 
-float IMU::readAngularSpeed() {
+float readAngularSpeed() {
     int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
     Wire.beginTransmission(MPU_ADDR);
     Wire.write(0x3B);
     Wire.endTransmission(false);
-    Wire.requestFrom(MPU_ADDR, 14, true);
+    Wire.requestFrom(MPU_ADDR, 14);
     AcX = Wire.read() << 8 |
           Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)
     AcY = Wire.read() << 8 |
@@ -47,8 +45,8 @@ float IMU::readAngularSpeed() {
           Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
 
     float gyro_scale = 1;
-    if (false) gyro_scale = 131;
-    if (true) gyro_scale = 65.5;
+    if (true) gyro_scale = 131;
+    if (false) gyro_scale = 65.5;
     if (false) gyro_scale = 32.8;
     if (false) gyro_scale = 16.4;
 
@@ -59,5 +57,9 @@ float IMU::readAngularSpeed() {
     gyroX *= (0.017453293F);
     gyroY *= (0.017453293F);
     gyroZ *= (0.017453293F);
+    Serial.println(gyroZ);
+    delay(1000);
     return gyroZ;
 }
+
+#endif
