@@ -9,19 +9,16 @@ void testeMotor(int eixoX)
     {
         frente = 1850;
         ang = 1400;
-        Serial.println("Esq");
     }
     else if (eixoX > 0)
     {
         frente = 1850;
         ang = (1600);
-        Serial.println("Dir");
     }
     else
     {
         frente = 1850;
         ang = 1500;
-        Serial.println("FRENTE");
     }
 
     FW_PKS.writeMicroseconds(frente);
