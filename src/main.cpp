@@ -22,7 +22,7 @@ void loop(){
     if (leitura > 330){
       eixoX = -leitura;
     }
-    else if (leitura < 300){
+    else if (leitura < 310){
       eixoX = leitura;
     }
     else{
