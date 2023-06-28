@@ -3,19 +3,39 @@
 #include <motor.h>
 #include <Serial.h>
 #include <giroscopio.h>
-#include <testemotor.h>
+#include <Controle.h>
+//#include <Odometria.h>
 
-
-void setup() {
+int leitura, eixoX;
+void setup()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
   initPKS();
+  Serial.begin(9600, SERIAL_8N2);
+  Serial.setTimeout(1000);
   init_mpu();
-  Serial.begin(9600);
 }
 
-void loop() {
-  
-  motorsControl(20,0);
-  //Serial.println("Tá INDO");
-  
-}
+void loop()
+{
 
+  if (Serial.available() > 0)
+  {
+    leitura = (Serial.parseInt(SKIP_ALL, 1));
+    Serial.println(leitura, DEC);
+    if (leitura < 680 && leitura > -680)
+    {
+      eixoX = map(leitura, -680, 680, -680, 680);
+      
+    }
+    else
+    {
+      leitura = 0;
+      eixoX = 0;
+    }
+    testeMotor(eixoX);
+  }
+
+  // getPosicao(ENCDIR,positionDir,newPosDir);
+  // getPosicao(ENCESC,positionEsq,newPosEsq);
+}

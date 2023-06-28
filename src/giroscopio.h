@@ -28,7 +28,7 @@ float readAngularSpeed() {
     Wire.beginTransmission(MPU_ADDR);
     Wire.write(0x3B);
     Wire.endTransmission(false);
-    Wire.requestFrom(MPU_ADDR, 14);
+    Wire.requestFrom(MPU_ADDR, 14, true);
     AcX = Wire.read() << 8 |
           Wire.read();  // 0x3B (ACCEL_XOUT_H) & 0x3C (ACCEL_XOUT_L)
     AcY = Wire.read() << 8 |
@@ -45,8 +45,8 @@ float readAngularSpeed() {
           Wire.read();  // 0x47 (GYRO_ZOUT_H) & 0x48 (GYRO_ZOUT_L)
 
     float gyro_scale = 1;
-    if (true) gyro_scale = 131;
-    if (false) gyro_scale = 65.5;
+    if (false) gyro_scale = 131;
+    if (true) gyro_scale = 65.5;
     if (false) gyro_scale = 32.8;
     if (false) gyro_scale = 16.4;
 
@@ -57,8 +57,6 @@ float readAngularSpeed() {
     gyroX *= (0.017453293F);
     gyroY *= (0.017453293F);
     gyroZ *= (0.017453293F);
-    Serial.println(gyroZ);
-    delay(1000);
     return gyroZ;
 }
 

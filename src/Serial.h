@@ -5,13 +5,14 @@ void Serialinit(unsigned x){
     Serial.begin(x);
 }
 
-String getSerial()
+byte getSerial()
 {   
-    String read;
+    byte byteRead;
     if (Serial.available()){
-        read = Serial.readString();
+        byteRead = Serial.read();
     }
-    return read;
+    return byteRead;
+
 }
 
 void writeSerial(char comando) {
