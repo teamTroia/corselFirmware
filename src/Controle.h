@@ -11,7 +11,7 @@ void testeMotor(int eixoX)
         ang = 1400;
         Serial.println("Esq");
     }
-    if (eixoX > 0)
+    else if (eixoX > 0)
     {
         frente = 1850;
         ang = (1600);
