@@ -1,81 +1,41 @@
 #include <Arduino.h>
-#include "../include/defines.h"
-#include "../include/motor.h"
-#include "../include/testes.h"
-#include <string.h>
+#include <defines.h>
+#include <motor.h>
+#include <Serial.h>
+#include <giroscopio.h>
+#include <Controle.h>
+//#include <Odometria.h>
 
-
-Motor motores = Motor();
-bool ligado = false;
-bool comandoIniciado = false;
-bool comandoPronto = false;
-String cmd = "";
-long int momentoLigado = 0;
-
-int posCone = 320;
-
-void setup() {
-    Serial.begin(9600);
-    motores.init();
-    Serial2.begin(9600);
-    Serial2.print("AT\r\n");
-    pinMode(PC13, OUTPUT);
-    digitalWrite(PC13, LOW);
-    pinMode(PINO_LED, OUTPUT);
-    digitalWrite(PINO_LED, LOW);
+int leitura, eixoX;
+void setup()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+  initPKS();
+  Serial.begin(9600, SERIAL_8N2);
+  Serial.setTimeout(1000);
+  init_mpu();
 }
 
-void blink() {
-    digitalWrite(PINO_LED, HIGH);
-    delay(200);
-    digitalWrite(PINO_LED, LOW);
-    delay(200);
-    digitalWrite(PINO_LED, HIGH);
-    delay(200);
-    digitalWrite(PINO_LED, LOW);
-    delay(200);
-    digitalWrite(PINO_LED, HIGH);
-    delay(200);
-    digitalWrite(PINO_LED, LOW);
-}
+void loop()
+{
 
-
-void loop() {
-    char buff = ' ';
-    if (Serial2.available()) {
-        buff = Serial2.read();
-        if (buff == 'B'){
-            comandoIniciado = true;
-        }
-        if (comandoIniciado && buff != 'B') {
-            if (buff == 'E') {
-                comandoPronto = true;
-            } else {
-                cmd = cmd + buff;
-            }
-        }
+  if (Serial.available() > 0)
+  {
+    leitura = (Serial.parseInt(SKIP_ALL, 1));
+    Serial.println(leitura, DEC);
+    if (leitura < 680 && leitura > -680)
+    {
+      eixoX = map(leitura, -680, 680, -680, 680);
+      
     }
-
-    if (comandoPronto) {
-        if (cmd == "ON") {
-            ligado = true;
-            momentoLigado = millis();
-        } else if (cmd == "NOC") {
-            posCone = CENTRO_CONE;
-        } else {
-            posCone = atoi(cmd.c_str());
-        }
-
-        comandoPronto = false;
-        comandoIniciado = false;
-        cmd = "";
+    else
+    {
+      leitura = 0;
+      eixoX = 0;
     }
+    testeMotor(eixoX);
+  }
 
-    if (ligado) {
-        if (momentoLigado - millis() > 5000) {
-            Serial.print("POS CONE: ");
-            Serial.println(posCone);
-            motores.motorsControl(20,0, posCone);
-        }
-    }
+  // getPosicao(ENCDIR,positionDir,newPosDir);
+  // getPosicao(ENCESC,positionEsq,newPosEsq);
 }
