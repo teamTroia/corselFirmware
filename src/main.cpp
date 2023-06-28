@@ -7,8 +7,7 @@
 //#include <Odometria.h>
 
 int leitura, eixoX;
-void setup()
-{
+void setup(){
   pinMode(LED_BUILTIN, OUTPUT);
   initPKS();
   Serial.begin(9600, SERIAL_8N2);
@@ -16,21 +15,17 @@ void setup()
   init_mpu();
 }
 
-void loop()
-{
-
-  if (Serial.available() > 0)
-  {
+void loop(){
+  if (Serial.available() > 0){
     leitura = (Serial.parseInt(SKIP_ALL, 1));
     Serial.println(leitura, DEC);
-    if (leitura < 680 && leitura > -680)
-    {
-      eixoX = map(leitura, -680, 680, -680, 680);
-      
+    if (leitura > 330){
+      eixoX = -leitura;
     }
-    else
-    {
-      leitura = 0;
+    else if (leitura < 300){
+      eixoX = leitura;
+    }
+    else{
       eixoX = 0;
     }
     testeMotor(eixoX);
