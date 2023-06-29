@@ -16,9 +16,30 @@ void setup(){
 }
 
 void loop(){
-  if (Serial.available() > 0){
-    leitura = (Serial.parseInt(SKIP_ALL, 1));
+  #if (Serial.available() > 0){
+  #  char c = Serial.read(); // Lê o próximo caractere disponível na porta serial
+  #  if (c == 'b'){
+  #    while (Serial.available() > 0 && Serial.read() != 'b')
+  #    {
+  #      // Continua lendo até encontrar a segunda letra 'b'
+  #    }
+  #  }
+  #  else if (isdigit(c)){
+  #    String receivedString = String(c);
+  #    while (Serial.available() > 0 && Serial.peek() != 'b' && isdigit(Serial.peek()))
+  #    {
+  #      receivedString += char(Serial.read());
+  #    }
+
+  #    leitura = receivedString.toInt();
+  #    Serial.println(leitura, DEC);
+
+    
+    String receivedString = Serial.readStringUntil('b');
+    String numberString = receivedString.substring(1);
+    leitura = numberString.toInt();
     Serial.println(leitura, DEC);
+      
     if (leitura > 330){
       eixoX = -leitura;
     }
