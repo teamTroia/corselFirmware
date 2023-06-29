@@ -4,18 +4,19 @@
 void testeMotor(int eixoX){
     int ang, frente;
 
-    if (eixoX < 0){
+    if (eixoX < 305){
         frente = 1850;
         ang = 1400;
     }
-    else if (eixoX > 0){
+    else if (eixoX > 335){
         frente = 1850;
         ang = (1600);
     }
-    else{
+    else (305 <= eixoX <= 335){
         frente = 1850;
         ang = 1500;
     }
+        
 
     FW_PKS.writeMicroseconds(frente);
     ANG_PKS.writeMicroseconds(ang);
