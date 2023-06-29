@@ -6,8 +6,11 @@
 #include <Controle.h>
 //#include <Odometria.h>
 
+#define LED2 9;
 int leitura, eixoX;
 void setup(){
+  pinMode(LED2, OUTPUT);
+  
   pinMode(LED_BUILTIN, OUTPUT);
   initPKS();
   Serial.begin(9600, SERIAL_8N2);
@@ -17,29 +20,11 @@ void setup(){
 
 void loop(){
   if (Serial.available() > 0){
-  //  char c = Serial.read(); // Lê o próximo caractere disponível na porta serial
-  //  if (c == 'b'){
-  //    while (Serial.available() > 0 && Serial.read() != 'b')
-  //    {
-  //      // Continua lendo até encontrar a segunda letra 'b'
-  //    }
-  //  }
-  //  else if (isdigit(c)){
-  //    String receivedString = String(c);
-  //    while (Serial.available() > 0 && Serial.peek() != 'b' && isdigit(Serial.peek()))
-  //    {
-  //      receivedString += char(Serial.read());
-  //    }
-
-  //    leitura = receivedString.toInt();
-  //    Serial.println(leitura, DEC);
-
     
-    String receivedString = Serial.readStringUntil('b');
-    String numberString = receivedString.substring(1);
-    leitura = numberString.toInt();
-    Serial.println(leitura, DEC);
-      
+    int leitura = Serial.read();
+
+    if (leitura > 1000){
+      digitalWrite(LED2, HIGH)
     if (leitura > 330){
       eixoX = -leitura;
     }
