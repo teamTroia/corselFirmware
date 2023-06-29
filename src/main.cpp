@@ -23,13 +23,11 @@ void loop()
     if (Serial.available() > 0) {
        c = char(Serial.read());
     }
-    palavra += c;
-    while(c != '\n'){
-      if (Serial.available() > 0) {
-      c = char(Serial.read());
-      //Serial.println(c);
-      palavra = palavra + c;
-      }
+    else if (leitura < 310){
+      eixoX = leitura;
+    }
+    else{
+      eixoX = 0;
     }
     int eixoX = palavra.toInt();
 
