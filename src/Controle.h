@@ -12,7 +12,7 @@ void testeMotor(int eixoX){
         frente = 1850;
         ang = (1600);
     }
-    else (305 <= eixoX <= 335){
+    else if (305 <= eixoX <= 335){
         frente = 1850;
         ang = 1500;
     }
