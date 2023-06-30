@@ -11,7 +11,7 @@ long positionEsq, positionDir, newPosEsq, newPosDir;
 Encoder ENCESC(DE1, DE2);
 Encoder ENCDIR(DE3, DE4);
 
-double getDistPercorrida(Encoder encoder, long position, long newPos, double dist)
+int getDistPercorrida(Encoder encoder, long position, long newPos, double dist)
 {
     newPos = encoder.read();
     if (newPos != position)
@@ -40,6 +40,18 @@ void getPosicao(Encoder encoder, long position, long newPos){
     Serial.println("Posição encoder: ");
     Serial.println(position);
 
+}
+
+int Velocidade(Encoder encoder ,long position, long newPos, double dist){
+    int tempo = millis();
+    int deltaS,aproxVel,S0;
+    S0 = getDistPercorrida(encoder, position, newPos, dist);
+    while(millis()-tempo < 10){
+        deltaS  = S0 + getDistPercorrida(encoder, position, newPos, dist);
+    }
+    aproxVel = deltaS/10;
+    tempo = millis();
+    return aproxVel;
 }
 
 #endif
