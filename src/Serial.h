@@ -4,31 +4,13 @@
 int SerialConvertion()
 {
     int eixoX = 0;
+    char c = ' ';
+    Serial.print("Alo");
     if (Serial.available() > 0)
     {
-        String palavra = "";
-        char c = ' ';
-        if (Serial.available() > 0)
-        {
-            c = char(Serial.read());
-        }
-        if (c == 'b')
-        {
-            int i = 0;
-            while (c != '\n')
-            {
-                if (Serial.available() > 0)
-                {
-                    c = char(Serial.read());
-                    i++;
-                    if (i >= 2 && i < 5){
-                        palavra = palavra + c;
-                    }
-                }
-            }
-            eixoX = palavra.toInt();
-        }
-
-        return eixoX;
-    }
+        c = Serial.read();
+        eixoX = c;//map(c, 0, 6, 0, 680);
+        Serial.print(eixoX, DEC);
+    };
+    return eixoX;
 }

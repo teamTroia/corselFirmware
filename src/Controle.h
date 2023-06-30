@@ -4,19 +4,19 @@
 void testeMotor(int eixoX)
 {
     int ang, frente;
-    if (eixoX != 0)
+    if (eixoX != 48)
     {
-        if (eixoX < 305)
+        if (eixoX < 52)
         {
             frente = 1850;
             ang = 1200;
         }
-        else if (eixoX > 335)
+        else if (eixoX > 52)
         {
             frente = 1850;
             ang = (1800);
         }
-        else if (eixoX >= 305 && eixoX <= 335)
+        else if (eixoX == 52)
         {
             frente = 1850;
             ang = 1500;
