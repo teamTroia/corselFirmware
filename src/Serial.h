@@ -3,14 +3,18 @@
 // Colocar o baudrate desejado para leitura
 int SerialConvertion()
 {
+    long int leitura;
     int eixoX = 0;
+    char x = ' ';
+    String val = " ";
     Serial.print("Alo");
     if (Serial.available())
     {
-        String palavra = Serial.read();
-        Print(palavra); //tm que estar neste modelo = b'0X/0X' algo assim
-        eixoX = int.from_bytes(palavra, byteorder='little')
-        Serial.print(eixoX, DEC); // precisa sair o valor enviado pela nvidia exemplo 435
+        x = Serial.read();
+        if (x == ','){
+            leitura = val.toInt();
+            leitura = map(leitura, 0, 1023, 0, 680);
+        }
     };
     return eixoX;
 }
