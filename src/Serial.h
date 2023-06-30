@@ -4,13 +4,13 @@
 int SerialConvertion()
 {
     int eixoX = 0;
-    char c = ' ';
     Serial.print("Alo");
-    if (Serial.available() > 0)
+    if (Serial.available())
     {
-        c = Serial.read();
-        eixoX = c;//map(c, 0, 6, 0, 680);
-        Serial.print(eixoX, DEC);
+        String palavra = Serial.read();
+        Print(palavra); //tm que estar neste modelo = b'0X/0X' algo assim
+        eixoX = int.from_bytes(palavra, byteorder='little')
+        Serial.print(eixoX, DEC); // precisa sair o valor enviado pela nvidia exemplo 435
     };
     return eixoX;
 }
