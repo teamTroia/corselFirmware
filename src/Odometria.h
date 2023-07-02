@@ -5,13 +5,13 @@
 #include <math.h>
 #include <defines.h>
 
-double raioRoda = 30;
+double raioRoda = 0.21;
 double voltas, distEsq, distDir, distAnt, distPercorrido;
 long positionEsq, positionDir, newPosEsq, newPosDir;
 Encoder ENCESC(DE1, DE2);
 Encoder ENCDIR(DE3, DE4);
 
-int getDistPercorrida(Encoder encoder, long position, long newPos, double dist)
+double getDistPercorrida(Encoder encoder, long position, long newPos, double dist)
 {
     newPos = encoder.read();
     if (newPos != position)
@@ -50,6 +50,7 @@ int Velocidade(Encoder encoder ,long position, long newPos, double dist){
         deltaS  = S0 + getDistPercorrida(encoder, position, newPos, dist);
     }
     aproxVel = deltaS/10;
+    double angRoda = aproxVel/raioRoda;
     tempo = millis();
     return aproxVel;
 }

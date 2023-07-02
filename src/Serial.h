@@ -3,18 +3,36 @@
 // Colocar o baudrate desejado para leitura
 int SerialConvertion()
 {
-    long int leitura;
-    int eixoX = 0;
-    char x = ' ';
-    String val = " ";
-    Serial.print("Alo");
-    if (Serial.available())
+    String palavra = " ";
+    char c;
+    if (Serial.available() > 0)
     {
-        x = Serial.read();
-        if (x == ','){
-            leitura = val.toInt();
-            leitura = map(leitura, 0, 1023, 0, 680);
+        c = (Serial.read());
+        if (c == (','))
+        {
+            while (c != '/')
+            {
+                int i = 0;
+                if (Serial.available() > 0)
+                {   
+                    c = char(Serial.read());
+                    i++;
+                    if (i < 2)
+                    {
+                        
+                        Serial.println(c);
+                        palavra = palavra + c;
+                    }
+                }
+            }
+            Serial.println(palavra);
+            int eixoX = palavra.toInt();
+            Serial.println(eixoX);
+            return eixoX;
         }
-    };
-    return eixoX;
+    }
+    else
+    {
+        return 0;
+    }
 }

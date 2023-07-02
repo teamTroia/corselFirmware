@@ -18,5 +18,4 @@ void loop()
 {
   eixoX = SerialConvertion();
   testeMotor(eixoX);
-
 }
