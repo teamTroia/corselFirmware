@@ -5,7 +5,7 @@
 #include <math.h>
 #include <defines.h>
 
-double raioRoda = 30;
+double raioRoda = 0.21;
 double voltas, distEsq, distDir, distAnt, distPercorrido;
 long positionEsq, positionDir, newPosEsq, newPosDir;
 Encoder ENCESC(DE1, DE2);
@@ -42,4 +42,24 @@ void getPosicao(Encoder encoder, long position, long newPos){
 
 }
 
+int Velocidade(Encoder encoder ,long position, long newPos, double dist){
+    int tempo = millis();
+    int deltaS,aproxVel,S0;
+    S0 = getDistPercorrida(encoder, position, newPos, dist);
+    while(millis()-tempo < 10){
+        deltaS  = S0 + getDistPercorrida(encoder, position, newPos, dist);
+    }
+    aproxVel = deltaS/10;
+    double angRoda = aproxVel/raioRoda;
+    tempo = millis();
+    return aproxVel;
+}
+
+void caminho(long trajeto,Encoder encoder ,long position, long newPos, double dist){
+    int distatual = 0;
+    while(distatual < trajeto){
+        distatual = (Velocidade(encoder ,position, newPos, dist) * millis())/1000;
+    }
+    distAnt = distatual;
+}
 #endif

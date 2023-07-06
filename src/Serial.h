@@ -1,23 +1,38 @@
 #include <Arduino.h>
 
-//Colocar o baudrate desejado para leitura
-void Serialinit(unsigned x){
-    Serial.begin(x);
-}
-
-byte getSerial()
-{   
-    byte byteRead;
-    if (Serial.available()){
-        byteRead = Serial.read();
+// Colocar o baudrate desejado para leitura
+int SerialConvertion()
+{
+    String palavra = " ";
+    char c;
+    if (Serial.available() > 0)
+    {
+        c = (Serial.read());
+        if (c == (','))
+        {
+            while (c != '/')
+            {
+                int i = 0;
+                if (Serial.available() > 0)
+                {   
+                    c = char(Serial.read());
+                    i++;
+                    if (i < 2)
+                    {
+                        
+                        Serial.println(c);
+                        palavra = palavra + c;
+                    }
+                }
+            }
+            Serial.println(palavra);
+            int eixoX = palavra.toInt();
+            Serial.println(eixoX);
+            return eixoX;
+        }
     }
-    return byteRead;
-
-}
-
-void writeSerial(char comando) {
-
-    if(Serial.available()){
-        Serial.write(comando);
+    else
+    {
+        return 0;
     }
 }

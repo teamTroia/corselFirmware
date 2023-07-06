@@ -6,6 +6,10 @@
 #define fw_pks 6
 #define ang_pks 5
 
+#define trigPin 9
+#define echoPin 10
+#define LEDCONE 8
+
 #define DE1 A0
 #define DE2 A1
 #define DE3 A2
