@@ -55,4 +55,11 @@ int Velocidade(Encoder encoder ,long position, long newPos, double dist){
     return aproxVel;
 }
 
+void caminho(long trajeto,Encoder encoder ,long position, long newPos, double dist){
+    int distatual = 0;
+    while(distatual < trajeto){
+        distatual = (Velocidade(encoder ,position, newPos, dist) * millis())/1000;
+    }
+    distAnt = distatual;
+}
 #endif
