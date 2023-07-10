@@ -11,6 +11,9 @@
                 "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/include",
                 "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/src",
                 "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/FastLED/src",
+                "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                 "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Servo/src",
                 "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Encoder",
                 "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Encoder/utility",
@@ -18,8 +21,6 @@
                 "C:/Users/drodm/.platformio/packages/framework-arduino-avr/variants/standard",
                 "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                 ""
             ],
             "browse": {
@@ -28,6 +29,9 @@
                     "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/include",
                     "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/src",
                     "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
+                    "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/FastLED/src",
+                    "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
+                    "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                     "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Servo/src",
                     "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Encoder",
                     "C:/Users/drodm/OneDrive/Documentos/GitHub/corselFirmware/.pio/libdeps/uno/Encoder/utility",
@@ -35,13 +39,11 @@
                     "C:/Users/drodm/.platformio/packages/framework-arduino-avr/variants/standard",
                     "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/HID/src",
-                    "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
-                    "C:/Users/drodm/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=60107",
+                "PLATFORMIO=60109",
                 "ARDUINO_AVR_UNO",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",
@@ -49,8 +51,8 @@
                 "__AVR_ATmega328P__",
                 ""
             ],
-            "cStandard": "c11",
-            "cppStandard": "c++11",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
             "compilerPath": "C:/Users/drodm/.platformio/packages/toolchain-atmelavr/bin/avr-gcc.exe",
             "compilerArgs": [
                 "-mmcu=atmega328p",

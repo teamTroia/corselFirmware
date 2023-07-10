@@ -2,13 +2,14 @@
 #define DEFINES_H
 
 #include <Arduino.h>
+#include <FastLED.h>
 
 #define fw_pks 6
 #define ang_pks 5
 
 #define trigPin 9
 #define echoPin 10
-#define LEDCONE 8
+#define LEDCONE 3
 
 #define DE1 A0
 #define DE2 A1

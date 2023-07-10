@@ -9,23 +9,32 @@ void testeMotor(int eixoX)
         if (eixoX > 0 && eixoX < 220)
         {
             frente = 1340;
-            ang = 1156;
+            int cont;
+            for(int cont = 14; cont >= 0; cont--){
+                ang = 1156+cont;    
+                FW_PKS.writeMicroseconds(frente);
+                ANG_PKS.writeMicroseconds(ang);
+            }
         }
         else if (eixoX > 420)
-        
         {
             frente = 1760;
-            ang = 1894;
+            for(int cont = 14; cont>=0; cont--){
+                ang = 1894-cont;
+                FW_PKS.writeMicroseconds(frente);
+                ANG_PKS.writeMicroseconds(ang);
+            }
         }
         else if (eixoX >= 220 && eixoX <= 420)
         {
-            frente = 1876;
-            ang = 1500;
+           ang = 1500;
+           for(int cont = 14; cont>=0; cont--){
+                frente = 1879-cont;
+                FW_PKS.writeMicroseconds(frente);
+                ANG_PKS.writeMicroseconds(ang);
+            }
         }
     }
-
-    FW_PKS.writeMicroseconds(frente);
-    ANG_PKS.writeMicroseconds(ang);
     delay(400);
 }
 
