@@ -6,12 +6,15 @@
 #include <Controle.h>
 //#include <Odometria.h>
 #include <Ultrassonico.h>
+#include <Adafruit_NeoPixel.h>
 
-int leitura, eixoX, contAchou;
+int leitura, eixoX, 
+int contAchou = 0;
 void setup()
 {
-  pinMode(LEDCONE, OUTPUT);
-  digitalWrite(LEDCONE, LOW);
+  Adafruit_NeoPixel pixels(numPixel, LEDCONE, NEO_GRB + NEO_KHZ800);
+  pixels.begin();
+  pixels.clear();
   initPKS();
   Serial.begin(9600);
   init_mpu();
@@ -22,25 +25,30 @@ void loop()
 {
   eixoX = SerialConvertion();
   testeMotor(eixoX);
-  //distCone();
+  int distancia = distCone();
   //getpulse(1760,1793);
-  if(distance <= 25){
+  if(distancia <= 25){
     int tempoatual = millis();
     FW_PKS.writeMicroseconds(1500);
     ANG_PKS.writeMicroseconds(1500);
-    while(millis()-tempoatual <= 1000){
-      digitalWrite(LEDCONE, HIGH);
+    while(millis()-tempoatual <= 1500){
+      for(int i=0; i<NUMPIXELS; i++) {
+        pixels.setPixelColor(i, pixels.Color(255, 255, 255));
+        pixels.show();
+        delay(10);
+      }
       Serial.print("LIGADO");
     }
-    digitalWrite(LEDCONE, LOW);
+    pixels.clear();
     Serial.print("DESLIGADO");
     contAchou++;
   }
-  if (contAchou == 1 ){
+  if (contAchou == 1){
     int tempoatual = millis();
     while(millis()-tempoatual <= 7000){
       FW_PKS.writeMicroseconds(1760);
       ANG_PKS.writeMicroseconds(1894);
     }
+    contAchou--;
   }
 }
