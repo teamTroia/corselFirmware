@@ -9,7 +9,10 @@
 
 #define trigPin 9
 #define echoPin 10
+
 #define LEDCONE 3
+#define numPixel 3
+
 
 #define DE1 A0
 #define DE2 A1
