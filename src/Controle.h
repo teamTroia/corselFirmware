@@ -2,16 +2,28 @@
 #include <motor.h>
 
 int ang, frente;
+
+float PID(float target, float atual)
+{
+    float kp = 1800;
+
+    float error = target - atual;
+    float output = error * kp;
+    return output;
+}
+
 void testeMotor(int eixoX)
 {
     if (eixoX != 0)
     {
-        if (eixoX > 0 && eixoX < 220)
+        float giro = readAngularSpeed();
+        int Angularspeed = PID(0, giro);
+        if (eixoX > 0 && eixoX < 280) //220
         {
             frente = 1340;
             int cont;
             for(int cont = 14; cont >= 0; cont--){
-                ang = 1156+cont;    
+                ang = 1140+cont;    //1156
                 FW_PKS.writeMicroseconds(frente);
                 ANG_PKS.writeMicroseconds(ang);
             }
@@ -25,26 +37,22 @@ void testeMotor(int eixoX)
                 ANG_PKS.writeMicroseconds(ang);
             }
         }
-        else if (eixoX >= 220 && eixoX <= 420)
+        else if (eixoX >= 280 && eixoX <= 420) //280
         {
-           ang = 1500;
-           for(int cont = 14; cont>=0; cont--){
-                frente = 1879-cont;
+           for(int cont = 0; cont>=14; cont++){
+                frente = 1920-cont;
                 FW_PKS.writeMicroseconds(frente);
-                ANG_PKS.writeMicroseconds(ang);
+                if(Angularspeed>-1){
+                    ANG_PKS.writeMicroseconds(1500-Angularspeed);
+                }
+                else{
+                    ANG_PKS.writeMicroseconds(1500);
+                }
+
             }
         }
     }
     delay(400);
-}
-
-float PID(float target, float atual)
-{
-    float kp = 60;
-
-    float error = target - atual;
-    float output = error * kp;
-    return output;
 }
 
 float pidCamera(int target, int atual)

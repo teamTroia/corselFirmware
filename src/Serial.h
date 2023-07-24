@@ -1,5 +1,13 @@
 #include <Arduino.h>
 
+void limparBufer(){
+    unsigned char temp = Serial.available(); 
+
+    for (int i = temp; i>=0; i--){
+        Serial.read();
+    };
+}
+
 // Colocar o baudrate desejado para leitura
 int SerialConvertion()
 {

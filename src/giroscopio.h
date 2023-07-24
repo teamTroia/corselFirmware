@@ -57,7 +57,7 @@ float readAngularSpeed() {
     gyroX *= (0.017453293F);
     gyroY *= (0.017453293F);
     gyroZ *= (0.017453293F);
-    return gyroY;
+    return gyroZ;
 }
 
 #endif
