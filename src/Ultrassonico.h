@@ -22,10 +22,8 @@ int distCone()
   // Calculating the distance
   distancia = duracao * 0.034 / 2;
   // Prints the distance on the Serial Monitor
-  if (distancia > 5)
+  if (distancia > 0)
   {
-    Serial.print("Distance: ");
-    Serial.println(distancia);
     return distancia;
   }
 }

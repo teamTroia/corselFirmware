@@ -5,7 +5,7 @@ int ang, frente;
 
 float PID(float target, float atual)
 {
-    float kp = 1800;
+    float kp = 500;   //500 day4
 
     float error = target - atual;
     float output = error * kp;
@@ -16,43 +16,29 @@ void testeMotor(int eixoX)
 {
     if (eixoX != 0)
     {
-        float giro = readAngularSpeed();
-        int Angularspeed = PID(0, giro);
-        if (eixoX > 0 && eixoX < 280) //220
+        if (eixoX >= 280 && eixoX <= 421) // 280
         {
-            frente = 1340;
-            int cont;
-            for(int cont = 14; cont >= 0; cont--){
-                ang = 1140+cont;    //1156
-                FW_PKS.writeMicroseconds(frente);
-                ANG_PKS.writeMicroseconds(ang);
-            }
+            frente = 1878;
+            FW_PKS.writeMicroseconds(frente);
+            ANG_PKS.writeMicroseconds(1500);
         }
-        else if (eixoX > 420)
+        else if (eixoX > 421 && eixoX < 500)
         {
             frente = 1760;
-            for(int cont = 14; cont>=0; cont--){
-                ang = 1894-cont;
-                FW_PKS.writeMicroseconds(frente);
-                ANG_PKS.writeMicroseconds(ang);
-            }
+            ang = 1880;
+            FW_PKS.writeMicroseconds(frente);
+            ANG_PKS.writeMicroseconds(ang);
         }
-        else if (eixoX >= 280 && eixoX <= 420) //280
+        else if (eixoX >= 10 && eixoX < 280) // 220
         {
-           for(int cont = 0; cont>=14; cont++){
-                frente = 1920-cont;
-                FW_PKS.writeMicroseconds(frente);
-                if(Angularspeed>-1){
-                    ANG_PKS.writeMicroseconds(1500-Angularspeed);
-                }
-                else{
-                    ANG_PKS.writeMicroseconds(1500);
-                }
-
-            }
+            frente = 1340;
+            ang = 1105; // 1140 // 1080 day1 RCX 32% de forca no giro.
+            FW_PKS.writeMicroseconds(frente);
+            ANG_PKS.writeMicroseconds(ang);
         }
     }
     delay(400);
+
 }
 
 float pidCamera(int target, int atual)
@@ -64,12 +50,8 @@ float pidCamera(int target, int atual)
     return output;
 }
 
-void align(int eixoX){
-    float gyro = readAngularSpeed();
-}
-
-void getpulse(int frente, int ang){
+void getpulse(int frente, int ang)
+{
     FW_PKS.writeMicroseconds(frente);
     ANG_PKS.writeMicroseconds(ang);
-    
 }

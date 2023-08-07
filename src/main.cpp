@@ -1,72 +1,83 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <defines.h>
 // #include <motor.h>
 #include <Serial.h>
 // #include <giroscopio.h>
 #include <Controle.h>
-//#include <Odometria.h>
-#include <Ultrassonico.h>
+// #include <Odometria.h>
 #include <FastLED.h>
+#include <Ultrassonico.h>
 
 CRGB leds[NUM_LEDS];
 int leitura, eixoX;
 
-void acendeLED(){
-  for (int i = 0; i <= 3; i++){
+void acendeLED()
+{
+  for (int i = 0; i <= 3; i++)
+  {
     leds[i] = CRGB::Green;
     FastLED.show();
   }
-  delay(1500);
+  delay(3000);
 }
-void apagaLED(){
-  for (int i = 0; i <=  3; i++){
+
+void apagaLED()
+{
+  for (int i = 0; i <= 3; i++)
+  {
     leds[i] = CRGB::Black;
     FastLED.show();
   }
 }
 
-void setup(){
-  FastLED.addLeds<WS2812,3,GRB>(leds,NUM_LEDS);
-  apagaLED();
+void setup()
+{
+  FastLED.addLeds<WS2812, 3, GRB>(leds, NUM_LEDS);
   initPKS();
   Serial.begin(9600);
   init_mpu();
   initUltrassonico();
+  apagaLED();
 }
 
-void loop(){
-  float gyro = readAngularSpeed();
-  //Serial.println(gyro);
-  int Angularspeed = PID(0,gyro);
-  //Serial.println(Angularspeed);
-  if(Angularspeed>-1){
-    getpulse(1920,1500-Angularspeed);
-    //Serial.println("Esquerda");
-  }
-  else{
-    getpulse(1880,1500);
-    //Serial.println("Direita");
-  }
-
-
-  //eixoX = SerialConvertion();
-  //testeMotor(eixoX);
-  //int d = distCone();
-  /*if (d < 45 && d > 5)
+void ultra(){
+  int d = distCone();
+  Serial.println(d);
+  if (d < 50)
   {
     FW_PKS.writeMicroseconds(1500);
     ANG_PKS.writeMicroseconds(1500);
     acendeLED();
-    
-    //int contAchou = 1;
     apagaLED();
-    //if (contAchou == 1)
-    //{
-      FW_PKS.writeMicroseconds(1760);
-      ANG_PKS.writeMicroseconds(1894);
-      delay(5000);
-      limparBufer();
-      //contAchou--;
-    //}
-  }*/
+    Serial.println("SensorDistPegou");
+    delay(50000);
+  }
+}
+
+void loop()
+{
+  eixoX = SerialConvertion();
+  while (eixoX == 0)
+  {
+    float gyro = readAngularSpeed();
+    if (gyro != -0.02)
+    {
+      //Serial.println(gyro);
+      int Angularspeed = PID(0, gyro);
+      //Serial.println(Angularspeed);
+      if (Angularspeed > -140 && Angularspeed < 140)
+      {
+        getpulse(1890, 1500 + Angularspeed); //1890 day4
+        //Serial.println("Esquerda");
+      }
+      else
+      {
+        getpulse(1890, 1500); //1890 day4
+      }
+    }
+    ultra();
+  }
+  testeMotor(eixoX);
+  ultra();
 }

@@ -27,15 +27,11 @@ int SerialConvertion()
                     i++;
                     if (i < 2)
                     {
-                        
-                        Serial.println(c);
                         palavra = palavra + c;
                     }
                 }
             }
-            Serial.println(palavra);
             int eixoX = palavra.toInt();
-            Serial.println(eixoX);
             return eixoX;
         }
     }
