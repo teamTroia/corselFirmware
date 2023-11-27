@@ -1,3 +1,4 @@
+//Definindo pinos e variaveis
 #ifndef DEFINES_H
 #define DEFINES_H
 
