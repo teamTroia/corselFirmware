@@ -1,11 +1,11 @@
+//Importando bibliotecas
 #ifndef GIROSCOPIO_H
 #define GIROSCOPIO_H
-
 #include <defines.h>
 #include <Wire.h>
 
 
-void init_mpu() {
+void init_mpu(){ // iniciando giroscopio
     Wire.begin();
     Wire.beginTransmission(MPU_ADDR);
     Wire.write(0x6B);
@@ -23,7 +23,7 @@ void init_mpu() {
     Wire.endTransmission(true);
 }
 
-float readAngularSpeed() {
+float readAngularSpeed(){ // função que le o valor da velocidade angular
     int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ;
     Wire.beginTransmission(MPU_ADDR);
     Wire.write(0x3B);
